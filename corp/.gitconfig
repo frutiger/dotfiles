@@ -1,0 +1,5 @@
+[http "https://github.com"]
+        proxy = https://proxy.bloomberg.com:80
+[http "https://bbgithub.dev.bloomberg.com"]
+        proxy = https://bproxy.cfe.bloomberg.com:80
+

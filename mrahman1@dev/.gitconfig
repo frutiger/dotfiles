@@ -1,0 +1,4 @@
+[http]
+        proxy = https://devproxy.bloomberg.com:82
+        sslVerify = false
+

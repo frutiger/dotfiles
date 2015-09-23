@@ -1,0 +1,8 @@
+[url "/Users/masud/work/AeroFS/repos/"]
+        insteadOf = appinfra:
+        insteadOf = devgit:
+        insteadOf = https://bbgithub.dev.bloomberg.com/
+
+[url "hermes@drosophila.mooo.com:repos/"]
+        insteadOf = hermes:
+

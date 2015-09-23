@@ -1,0 +1,6 @@
+[submodule "solarized-xresources"]
+	path = solarized-xresources
+	url = https://frutiger@github.com/frutiger/solarized-xresources-dotfiles.git
+[submodule "unix/.vim/bundle/vundle"]
+	path = unix/.vim/bundle/vundle
+	url = https://github.com/gmarik/vundle.git

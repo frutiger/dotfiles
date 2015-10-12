@@ -1,2 +1,2 @@
-set guifont=Inconsolata\ 14
+set guifont=Inconsolata\ Bold\ 14
 

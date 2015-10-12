@@ -1,4 +1,4 @@
-*faceName: xft:Inconsolata:style=Medium:size=14
+*faceName: xft:Inconsolata:style=Medium:size=14:weight=700
 
 Xft.dpi:        96
 Xft.antialias:  true

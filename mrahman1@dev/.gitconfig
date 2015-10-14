@@ -1,4 +1,4 @@
 [http]
         proxy = https://devproxy.bloomberg.com:82
-        sslVerify = false
+        sslCAInfo = /home/mrahman1/certs/Bloomberg LP CORP CLASS 1 ROOT CA.cer
 

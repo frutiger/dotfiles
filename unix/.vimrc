@@ -25,7 +25,6 @@ set matchpairs+=<:>
 set diffopt+=iwhite completeopt-=preview
 
 set number ruler showmode laststatus=2
-set guioptions=aegiRL
 set wildmenu wildmode=longest:full,full wildignore=a.out,*.o,*.a
 set complete=.,w,b,u
 set scrolloff=5

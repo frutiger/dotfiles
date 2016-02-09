@@ -1,5 +1,6 @@
 [http "https://github.com"]
         proxy = https://proxy.bloomberg.com:80
+        sslCAInfo = /home/mrahman15/certs/Bloomberg LP CORP CLASS 1 ROOT CA.cer
 [http "https://bbgithub.dev.bloomberg.com"]
         proxy = https://bproxy.tdmz1.bloomberg.com:80
 

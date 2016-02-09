@@ -37,7 +37,6 @@ endif
 
 set directory=~/.swp//
 let g:solarized_termtrans=1
-set background=dark
 colorscheme solarized
 
 noremap <leader>i <Esc>yyPwdwiifndef INCLUDED<Esc>lr_vw~wDjo#endif<Esc>o<Esc>

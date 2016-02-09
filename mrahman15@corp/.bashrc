@@ -1,8 +1,8 @@
 function go {
   if [ "$#" -ge 2 ]; then
-    cd /trees/*$1*/*/*$2*
+    cd /c/dev/trees/*$1*/*/*$2*
   else
-    cd /code/*/*$1*
+    cd /c/dev/repos/*/*$1*
   fi
 }
 

@@ -1,0 +1,6 @@
+export INCLUDE=$INCLUDE"\
+C:\Program Files\Microsoft SDKs\Windows\v6.1\include;"
+
+export LIB=$LIB"\
+C:\Program Files\Microsoft SDKs\Windows\v6.1\lib;"
+

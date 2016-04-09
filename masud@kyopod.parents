@@ -2,5 +2,5 @@ unix
 work
 rnd
 msys
-msvc18
-winsdk6.1
+msvc19
+winsdk10.0.10240.0

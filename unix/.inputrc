@@ -1,6 +1,5 @@
+set editing-mode vi
 set bell-style none
-"\e[A": history-search-backward
-"\e[B": history-search-forward
-"\e[1;5C": forward-word
-"\e[1;5D": backward-word
-
+set keymap vi-command
+k: history-search-backward
+j: history-search-forward

@@ -51,3 +51,31 @@ function sshwap {
   popd >/dev/null
 }
 
+function go_resolve {
+  echo ~/code/*/*$1*
+}
+
+function go {
+  targets=$(go_resolve $@)
+
+  dirs=()
+  for target in $targets; do
+    if [ -d "$target" ]; then
+      dirs+=("$target")
+    fi
+  done
+
+  if [ ${#dirs[@]} == "0" ]; then
+    echo "$@" not found
+  elif [ ${#dirs[@]} == "1" ]; then
+    cd $dirs
+  else
+    select dir in ${dirs[@]}; do
+      if [[ $dir ]]; then
+        cd $dir
+        break
+      fi
+    done
+  fi
+}
+

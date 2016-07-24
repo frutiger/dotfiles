@@ -1,0 +1,4 @@
+# start a terminal
+bindsym $mod+Return       exec st-dark
+bindsym $mod+Shift+Return exec st-light
+

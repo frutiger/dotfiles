@@ -14,14 +14,24 @@ function go {
     targets=$(echo ~/code/*/*$1*)
   fi
 
-  if [ $(echo $targets | wc -w) == "1" ]; then
-    target=$targets
+  dirs=()
+  for target in $targets; do
+    if [ -d "$target" ]; then
+      dirs+=("$target")
+    fi
+  done
+
+  if [ ${#dirs[@]} == "0" ]; then
+    echo "$@" not found
+  elif [ ${#dirs[@]} == "1" ]; then
+    cd $dirs
   else
-    select target in $targets; do
-      if [[ $target ]]; then break; fi
+    select dir in ${dirs[@]}; do
+      if [[ $dir ]]; then
+        cd $dir
+        break
+      fi
     done
   fi
-
-  cd $target
 }
 

@@ -1,0 +1,3 @@
+[http "https://github.com"]
+        sslCAInfo = /home/mrahman1/certs/Bloomberg LP CORP CLASS 1 ROOT G2.cer
+

@@ -6,9 +6,6 @@ PROMPT_COMMAND='history -a'
 shopt -s histappend
 shopt -s cmdhist
 
-alias g=gvim
-alias vim='vim -X'
-
 alias gdi='git vimdiff'
 alias gds='git diff --stat'
 alias gdn='git diff --name-only --relative'

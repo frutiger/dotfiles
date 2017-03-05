@@ -30,7 +30,7 @@ set complete=.,w,b,u
 set scrolloff=5
 set mouse=a
 set tabpagemax=64
-set visualbell t_vb=
+set novisualbell t_vb=
 if &term=='xterm'
     set t_Co=256
 endif

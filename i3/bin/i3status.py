@@ -11,6 +11,7 @@ from socket      import AF_INET, AF_INET6, inet_ntop
 
 import datetime
 import json
+import math
 import os
 import signal
 import sys
@@ -206,11 +207,27 @@ def interface_address(networks):
     return data
 
 def format_traffic(traffic):
-    if traffic > 1024 * 1024 * 1024:
-        return '{:3.0f} GiB/s'.format(traffic / (1024 * 1024 * 1024))
-    if traffic > 1024 * 1024:
-        return '{:3.0f} MiB/s'.format(traffic / (1024 * 1024))
-    return '{:3.0f} KiB/s'.format(traffic / (1024))
+    traffic = int(traffic)
+    units = ['  B', 'KiB', 'MiB', 'GiB']
+
+    traffic /= 1024
+    power    = 1
+    while traffic > 1024:
+        traffic /= 1024
+        power   += 1
+
+    if traffic == 0:
+        return '   0 KiB/s'
+
+    exponent = int(math.log(traffic, 10))
+    if exponent == 0:
+        traffic = round(traffic, 2)
+    elif exponent == 1:
+        traffic = round(traffic, 1)
+    else:
+        traffic = round(traffic)
+
+    return '{:>4} {}/s'.format(str(traffic), units[power])
 
 def network_traffic(traffic_monitor, dir):
     traffic = traffic_monitor.stats()[0 if dir == 'down' else 1]

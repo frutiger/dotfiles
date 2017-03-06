@@ -138,3 +138,4 @@ new_window 1pixel
 bar {
         status_command bin/i3status.py
 }
+

@@ -1,5 +1,6 @@
 msys
-msvc18
+msvc19.12.25831
 corp
 work
-winsdk6.0a
+winsdk10.0.15063.0
+

@@ -33,11 +33,9 @@ set scrolloff=5
 set mouse=a
 set tabpagemax=64
 set novisualbell t_vb=
-if &term=='xterm'
-    set t_Co=256
-endif
 
-let g:solarized_termtrans=1
+set background&
+set t_Co=256
 colorscheme solarized
 
 noremap <leader>i <Esc>yyPwdwiifndef INCLUDED<Esc>lr_vw~wDjo#endif<Esc>o<Esc>

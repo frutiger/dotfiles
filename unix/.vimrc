@@ -9,6 +9,8 @@ Plugin 'altercation/vim-colors-solarized'
 syntax on
 filetype plugin indent on
 
+set directory=~/.swp//
+
 set hidden
 set tabstop=8 softtabstop=8
 set shiftwidth=4 expandtab smarttab
@@ -35,7 +37,6 @@ if &term=='xterm'
     set t_Co=256
 endif
 
-set directory=~/.swp//
 let g:solarized_termtrans=1
 colorscheme solarized
 

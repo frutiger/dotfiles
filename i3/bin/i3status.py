@@ -5,15 +5,15 @@ from ctypes      import (cdll, get_errno, cast,
                          c_ushort, c_ubyte, c_void_p, c_char_p,
                          c_uint, c_uint16, c_uint32)
 from collections import deque
-from functools   import reduce
-from operator    import add
 from socket      import AF_INET, AF_INET6, inet_ntop
 
 import datetime
 import json
+import lxml.etree
 import math
 import os
 import signal
+import subprocess
 import sys
 import time
 
@@ -149,7 +149,9 @@ class InterfaceTrafficMonitor:
                 if items[0] != self._interface + ':':
                     continue
 
-                return int(items[1]), int(items[9]), datetime.datetime.now()
+                return (8 * int(items[1]),
+                        8 * int(items[9]),
+                        datetime.datetime.now())
 
     def __init__(self, interface):
         self._interface   = interface
@@ -170,6 +172,19 @@ class InterfaceTrafficMonitor:
         sent       = (last[1] - first[1])
         return received/time_delta, sent/time_delta
 
+class InterfaceTrafficMonitors:
+    def __init__(self, interfaces):
+        self._monitors = {}
+        for interface in interfaces:
+            self._monitors[interface] = InterfaceTrafficMonitor(interface)
+
+    def update(self):
+        for monitor in self._monitors.values():
+            monitor.update()
+
+    def __getitem__(self, interface):
+        return self._monitors[interface].stats()
+
 def cpu_thermal():
     root  = '/sys/devices/platform/coretemp.0/hwmon'
     paths = os.listdir(root)
@@ -180,35 +195,34 @@ def cpu_thermal():
     for suffix in ('input', 'max', 'crit'):
         with open(path + suffix) as f:
             temps[suffix] = float(f.read().strip())
-    data = {
-        'full_text': '{:0>2.0f} °C'.format(temps['input'] / 1000),
-    }
-    if temps['input'] > temps['max']:
-        data['color'] = '#ff0000'
-    return data
+    return text('{:0>2.0f} °C'.format(temps['input'] / 1000),
+                '#ff0000' if temps['input'] > temps['max'] else None)
+
+def gpu_thermal():
+    data       = subprocess.check_output(['nvidia-smi', '-q', '-x'])
+    parsed     = lxml.etree.fromstring(data)
+    temps      = next(parsed.iter('temperature'))
+    properties = {}
+    for elem in temps:
+        try:
+            properties[elem.tag] = int(elem.text.split()[0])
+        except ValueError:
+            pass
+    return text('{:0>2.0f} °C'.format(properties['gpu_temp']),
+                '#ff0000' if properties['gpu_temp'] > \
+                               properties['gpu_temp_slow_threshold'] else None)
 
 def cpu(monitor):
     usage = monitor.usage()
-    text  = '{:0>2.0f}%'.format(100 * usage)
-    data = {
-        'full_text': text,
-        'separator_block_width': 0,
-    }
-    if usage > 0.8:
-        data['color'] = '#ff0000'
-    return data
+    usage = '{:0>2.0f}%'.format(100 * usage)
+    return text(usage, '#ff0000' if usage > 0.8 else None)
 
 def interface_address(networks):
-    data = {
-        'full_text': ', '.join(networks),
-    }
-    if len(networks) == 0:
-        data['color'] = '#ff0000'
-    return data
+    return text(', '.join(networks))
 
 def format_traffic(traffic):
     traffic = int(traffic)
-    units = ['  B', 'KiB', 'MiB', 'GiB']
+    units = ['  b', 'k', 'M', 'G']
 
     traffic /= 1024
     power    = 1
@@ -217,7 +231,7 @@ def format_traffic(traffic):
         power   += 1
 
     if traffic == 0:
-        return '   0 KiB/s'
+        return '   0k'
 
     exponent = int(math.log(traffic, 10))
     if exponent == 0:
@@ -227,66 +241,62 @@ def format_traffic(traffic):
     else:
         traffic = round(traffic)
 
-    return '{:>4} {}/s'.format(str(traffic), units[power])
+    return '{:>4}{}'.format(str(traffic), units[power])
 
-def network_traffic(traffic_monitor, dir):
-    traffic = traffic_monitor.stats()[0 if dir == 'down' else 1]
-    direction = 'd' if dir == 'down' else 'u'
-    data = {
-        'full_text': '{} {}'.format(format_traffic(traffic), direction)
-    }
-    if traffic > 1024 * 1024:
-        data['color'] = '#ff0000'
-    return data
+def network_traffic(stats, dir):
+    traffic = stats[0 if dir == 'down' else 1]
+    return text(format_traffic(traffic),
+                '#ff0000' if traffic > 800 * 1024 * 1024 else None)
 
 def datestring():
-    return {
-        'full_text': datetime.datetime.now().strftime('%a %d %b, %H:%M:%S')
-    }
+    return text(datetime.datetime.now().strftime('%a %d %b, %H:%M:%S'))
 
 def separator():
-    return {
-        'full_text': '|',
-        'color': '#888888',
-    }
+    return text(' | ', '#888888')
 
-def text(string):
-    return {
+def text(string, color=None):
+    result = {
         'full_text': string,
         'separator_block_width': 0,
     }
+    if color is not None:
+        result['color'] = color
+    return result
 
-def cpu_group(cpu_usage_monitor):
+def cpu_group():
     return [
         text('CPU '),
-        cpu(cpu_usage_monitor),
-        text(', '),
         cpu_thermal(),
     ]
 
-def net_group(interface, traffic_monitor):
+def gpu_group():
+    return [
+        text('GPU '),
+        gpu_thermal(),
+    ]
+
+def net_group(interface, traffic_monitors):
     networks = ifaddrs(interface)
     result = []
     if len(networks) == 0:
-        label = text(interface + ' ')
-        label['color'] = '#ff0000'
-        return [label]
+        return [text(interface, '#ff0000')]
 
     return [
-        text(interface + ' '),
+        text(interface + ' ', '#00ff00'),
         interface_address(networks),
         text(': '),
-        network_traffic(traffic_monitor, 'down'),
-        text(', '),
-        network_traffic(traffic_monitor, 'up'),
+        network_traffic(traffic_monitors[interface], 'down'),
+        text('/'),
+        network_traffic(traffic_monitors[interface], 'up'),
     ]
 
-def status(cpu_usage_monitor, traffic_monitor):
-    items = cpu_group(cpu_usage_monitor)         + [separator()] + \
-            net_group('wlp4s0', traffic_monitor) + [separator()] + \
-            [datestring()]
+def status(interfaces, traffic_monitors):
+    items = cpu_group()                           + [separator()] + \
+            gpu_group()                           + [separator()]
+    for interface in interfaces:
+        items += net_group(interface, traffic_monitors) + [separator()]
+    items += [datestring()]
     for item in items:
-        item['separator']             = False
         if 'separator_block_width' not in item:
             item['separator_block_width'] = 5
     return items
@@ -329,22 +339,19 @@ signal.signal(signal.SIGCONT, control.enable)
 signal.signal(signal.SIGINT,  control.stop)
 signal.signal(signal.SIGTERM, control.stop)
 
-cpu_usage_monitor = CpuUsageMonitor(10)
-traffic_monitor   = InterfaceTrafficMonitor('wlp4s0')
+traffic_monitors = InterfaceTrafficMonitors(['wlp4s0', 'enp3s0'])
 
 def loop():
     while control.should_run():
-        cpu_usage_monitor.update()
-        traffic_monitor.update()
-        time.sleep(1)
+        traffic_monitors.update()
         if control.should_print():
+            write_object(status(['enp3s0'], traffic_monitors))
             sys.stdout.write(',')
-            write_object(status(cpu_usage_monitor, traffic_monitor))
+        time.sleep(1 / 4)
 
 def main():
     write_header()
     sys.stdout.write('[')
-    write_object(status(cpu_usage_monitor, traffic_monitor))
     try:
         loop()
     except KeyboardInterrupt:

@@ -1,3 +1,3 @@
-xrandr --output DP-0 --scale 1.7x1.7
+xrandr --output DP-0 --rotate normal
 exec i3
 

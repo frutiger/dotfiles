@@ -139,3 +139,6 @@ bar {
         status_command bin/i3status.py
 }
 
+# lock screen
+bindsym $mod+Ctrl+q exec i3lock -c 000000
+

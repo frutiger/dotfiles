@@ -26,7 +26,6 @@ set tabpagemax=64
 set novisualbell t_vb=
 
 set background&
-set t_Co=256
 colorscheme solarized
 
 noremap <leader>i <Esc>yyPwdwiifndef INCLUDED<Esc>lr_vw~wDjo#endif<Esc>o<Esc>

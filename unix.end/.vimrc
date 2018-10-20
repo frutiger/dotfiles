@@ -35,8 +35,8 @@ noremap <leader>r 100A <Esc>d70\|a// RETURN<Esc>
 if !exists("autocommands_loaded")
   let autocommands_loaded = 1
 
-  au BufEnter *.h,*.cpp,*.js,*.py highlight col_gt_80 ctermbg=red guibg=red
-  au BufEnter *.h,*.cpp,*.js,*.py match col_gt_80 /\%>80c/
+  au BufEnter * highlight col_gt_80 ctermbg=red guibg=red
+  au BufEnter * match col_gt_80 /\%>80c/
 endif
 
 let g:ctrlp_cmd = 'CtrlP ~'

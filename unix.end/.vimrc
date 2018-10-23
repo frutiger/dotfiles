@@ -25,8 +25,7 @@ set mouse=a
 set tabpagemax=64
 set novisualbell t_vb=
 
-set background&
-colorscheme solarized
+colorscheme solarized8
 
 noremap <leader>i <Esc>yyPwdwiifndef INCLUDED<Esc>lr_vw~wDjo#endif<Esc>o<Esc>
 noremap <leader>r 100A <Esc>d70\|a// RETURN<Esc>

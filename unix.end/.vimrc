@@ -13,7 +13,7 @@ set foldmethod=indent foldlevelstart=99
 set incsearch hlsearch
 set list listchars=tab:>-,trail:·
 set nowrap
-set textwidth=79
+set textwidth=79 cc=+1
 set matchpairs+=<:>
 set diffopt+=iwhite completeopt-=preview
 
@@ -29,13 +29,6 @@ colorscheme solarized8
 
 noremap <leader>i <Esc>yyPwdwiifndef INCLUDED<Esc>lr_vw~wDjo#endif<Esc>o<Esc>
 noremap <leader>r 100A <Esc>d70\|a// RETURN<Esc>
-
-if !exists("autocommands_loaded")
-  let autocommands_loaded = 1
-
-  au BufEnter * highlight col_gt_80 ctermbg=red guibg=red
-  au BufEnter * match col_gt_80 /\%>80c/
-endif
 
 let g:ctrlp_cmd = 'CtrlP ~'
 let g:ctrlp_user_command = 'scan %s'

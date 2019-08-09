@@ -17,7 +17,7 @@ set textwidth=79 cc=+1
 set matchpairs+=<:>
 set diffopt+=iwhite completeopt-=preview
 
-set ruler showmode laststatus=2
+set number ruler showmode laststatus=2
 set wildmenu wildmode=longest:full,full wildignore=a.out,*.o,*.a
 set complete=.,w,b,u
 set scrolloff=5

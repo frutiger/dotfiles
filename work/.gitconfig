@@ -1,3 +1,7 @@
 [user]
         email = mrahman15@bloomberg.net
 
+[url "https://bbgithub.dev.bloomberg.com/"]
+        insteadOf = bbgithub:
+        insteadOf = bbgithub.dev.bloomberg.com:
+

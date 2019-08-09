@@ -1,6 +1,3 @@
 [http "https://github.com"]
         proxy = https://devproxy.bloomberg.com:82
 
-[url "git@bbgithub.dev.bloomberg.com:"]
-        insteadOf = https://bbgithub.dev.bloomberg.com/
-

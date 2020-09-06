@@ -23,7 +23,7 @@ set complete=.,w,b,u
 set scrolloff=5
 set mouse=a
 set tabpagemax=64
-set novisualbell t_vb=
+set belloff=all
 
 colorscheme solarized8
 

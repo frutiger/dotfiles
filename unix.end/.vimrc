@@ -25,6 +25,7 @@ set mouse=a
 set tabpagemax=64
 set belloff=all
 
+set termguicolors
 colorscheme solarized8
 
 noremap <leader>i <Esc>yyPwdwiifndef INCLUDED<Esc>lr_vw~wDjo#endif<Esc>o<Esc>

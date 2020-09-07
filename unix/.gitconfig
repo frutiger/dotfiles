@@ -4,6 +4,8 @@
         excludesfile = ~/.gitignore
 [push]
         default = upstream
+[pull]
+        rebase = true
 [merge]
         ff = only
 [rerere]

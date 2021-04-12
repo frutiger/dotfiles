@@ -1,4 +1,4 @@
-PS1=$PS1_SUFFIX
+PS1="\u@\h \[[31m\]\w\[[0m\] [\j] \[[36m\]$\[[0m\] "
 
 HISTFILESIZE=1048576
 HISTSIZE=1048576

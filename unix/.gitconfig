@@ -10,4 +10,6 @@
         ff = only
 [rerere]
         enabled = 1
+[tag]
+        sort = version:refname
 

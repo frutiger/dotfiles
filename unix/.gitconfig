@@ -12,4 +12,6 @@
         enabled = 1
 [tag]
         sort = version:refname
+[init]
+        defaultBranch = master
 

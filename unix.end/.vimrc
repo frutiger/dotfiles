@@ -37,14 +37,6 @@ let g:ctrlp_max_files = 0
 let g:ctrlp_clear_cache_on_exit = 0
 let g:ctrlp_match_func = { 'match': 'pymatcher#PyMatch' }
 
-if executable('clangd')
-    au User lsp_setup call lsp#register_server({
-        \ 'name': 'clangd',
-        \ 'allowlist': ['c', 'cc', 'cpp', 'h'],
-        \ 'cmd': ['clangd', '--background-index'],
-        \ })
-endif
-
 if executable('typescript-language-server')
     au User lsp_setup call lsp#register_server({
         \ 'name': 'typescript-language-server',

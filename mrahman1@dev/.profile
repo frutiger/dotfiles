@@ -4,4 +4,4 @@ exec env - HOME=/home16/mrahman1 \
            LOGNAME=mrahman1 \
            TERM=xterm \
            KRB5CCNAME=$KRB5CCNAME \
-           bash --noprofile --rcfile "~/.bash_profile" -
+           /opt/bb/bin/bash --noprofile --rcfile "~/.bash_profile" -

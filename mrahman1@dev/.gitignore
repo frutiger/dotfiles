@@ -1,7 +1,5 @@
-# dev unix environment
-00sourcelist
-*sundev1*
-*ibm*
-*hp*
-*.lastlink
+*.tsk
+*.o
+pwhat_*
+CMakeFiles
 

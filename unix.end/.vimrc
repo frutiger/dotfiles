@@ -37,3 +37,43 @@ let g:ctrlp_max_files = 0
 let g:ctrlp_clear_cache_on_exit = 0
 let g:ctrlp_match_func = { 'match': 'pymatcher#PyMatch' }
 
+if has('nvim')
+lua << EOF
+    local on_attach = function(client, bufnr)
+        local function buf_set_keymap(lhs, rhs)
+            vim.api.nvim_buf_set_keymap(bufnr, 'n', lhs, rhs, { noremap=true, silent=true })
+        end
+
+        vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
+
+        buf_set_keymap('gD', '<cmd>lua vim.lsp.buf.declaration()<CR>')
+        buf_set_keymap('gd', '<cmd>lua vim.lsp.buf.definition()<CR>')
+        buf_set_keymap('K', '<cmd>lua vim.lsp.buf.hover()<CR>')
+        buf_set_keymap('gi', '<cmd>lua vim.lsp.buf.implementation()<CR>')
+        buf_set_keymap('<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>')
+        buf_set_keymap('<space>wl', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>')
+        buf_set_keymap('<space>rn', '<cmd>lua vim.lsp.buf.rename()<CR>')
+        buf_set_keymap('<space>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>')
+        buf_set_keymap('gr', '<cmd>lua vim.lsp.buf.references()<CR>')
+        buf_set_keymap('<space>e', '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>')
+        buf_set_keymap('[d', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>')
+        buf_set_keymap(']d', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>')
+        buf_set_keymap('<space>q', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>')
+        buf_set_keymap('<space>f', '<cmd>lua vim.lsp.buf.formatting()<CR>')
+    end
+
+    local lsp = require('lspconfig')
+
+    lsp.clangd.setup {
+        cmd = { 'clangd', '--background-index', '--completion-style=detailed' },
+        on_attach = function(client, bufnr)
+            on_attach(client, bufnr)
+            vim.api.nvim_buf_set_keymap(bufnr, 'n', '<C-s>', '<cmd>ClangdSwitchSourceHeader<CR>', { noremap=true, silent=true })
+        end,
+        default_config = {
+            filetypes = {'c', 'cc', 'cpp', 'h'},
+        }
+    }
+EOF
+endif
+

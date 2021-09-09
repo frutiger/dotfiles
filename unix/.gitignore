@@ -5,3 +5,7 @@
 *.pyc
 .mypy_cache
 
+# coverage files
+.coverage
+htmlcov
+

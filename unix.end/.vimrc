@@ -37,37 +37,43 @@ let g:ctrlp_max_files = 0
 let g:ctrlp_clear_cache_on_exit = 0
 let g:ctrlp_match_func = { 'match': 'pymatcher#PyMatch' }
 
-if executable('typescript-language-server')
-    au User lsp_setup call lsp#register_server({
-        \ 'name': 'typescript-language-server',
-        \ 'cmd': {server_info->[&shell, &shellcmdflag, 'typescript-language-server --stdio']},
-        \ 'root_uri':{server_info->lsp#utils#path_to_uri(lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), 'tsconfig.json'))},
-        \ 'whitelist': ['typescript', 'typescript.tsx'],
-        \ })
+if has('nvim')
+lua << EOF
+    local on_attach = function(client, bufnr)
+        local function buf_set_keymap(lhs, rhs)
+            vim.api.nvim_buf_set_keymap(bufnr, 'n', lhs, rhs, { noremap=true, silent=true })
+        end
+
+        vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
+
+        buf_set_keymap('gD', '<cmd>lua vim.lsp.buf.declaration()<CR>')
+        buf_set_keymap('gd', '<cmd>lua vim.lsp.buf.definition()<CR>')
+        buf_set_keymap('K', '<cmd>lua vim.lsp.buf.hover()<CR>')
+        buf_set_keymap('gi', '<cmd>lua vim.lsp.buf.implementation()<CR>')
+        buf_set_keymap('<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>')
+        buf_set_keymap('<space>wl', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>')
+        buf_set_keymap('<space>rn', '<cmd>lua vim.lsp.buf.rename()<CR>')
+        buf_set_keymap('<space>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>')
+        buf_set_keymap('gr', '<cmd>lua vim.lsp.buf.references()<CR>')
+        buf_set_keymap('<space>e', '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>')
+        buf_set_keymap('[d', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>')
+        buf_set_keymap(']d', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>')
+        buf_set_keymap('<space>q', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>')
+        buf_set_keymap('<space>f', '<cmd>lua vim.lsp.buf.formatting()<CR>')
+    end
+
+    local lsp = require('lspconfig')
+
+    lsp.clangd.setup {
+        cmd = { 'clangd', '--background-index', '--completion-style=detailed' },
+        on_attach = function(client, bufnr)
+            on_attach(client, bufnr)
+            vim.api.nvim_buf_set_keymap(bufnr, 'n', '<C-s>', '<cmd>ClangdSwitchSourceHeader<CR>', { noremap=true, silent=true })
+        end,
+        default_config = {
+            filetypes = {'c', 'cc', 'cpp', 'h'},
+        }
+    }
+EOF
 endif
-
-function! s:on_lsp_buffer_enabled() abort
-    setlocal omnifunc=lsp#complete
-    setlocal signcolumn=yes
-    if exists('+tagfunc') | setlocal tagfunc=lsp#tagfunc | endif
-    nmap <buffer> <leader>gd <plug>(lsp-definition)
-    nmap <buffer> <leader>gr <plug>(lsp-references)
-    nmap <buffer> <leader>gi <plug>(lsp-implementation)
-    nmap <buffer> <leader>gt <plug>(lsp-type-definition)
-    nmap <buffer> rn <plug>(lsp-rename)
-    nmap <buffer> [g <Plug>(lsp-previous-diagnostic)
-    nmap <buffer> ]g <Plug>(lsp-next-diagnostic)
-    nmap <buffer> K <plug>(lsp-hover)
-
-    " asyncomplete.vim
-    inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
-    inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
-    inoremap <expr> <cr>    pumvisible() ? "\<C-y>" : "\<cr>"
-endfunction
-
-augroup lsp_install
-    au!
-    " call s:on_lsp_buffer_enabled only for languages that has the server registered.
-    autocmd User lsp_buffer_enabled call s:on_lsp_buffer_enabled()
-augroup END
 

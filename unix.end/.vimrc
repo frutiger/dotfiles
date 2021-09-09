@@ -74,6 +74,18 @@ lua << EOF
             filetypes = {'c', 'cc', 'cpp', 'h'},
         }
     }
+
+    lsp.pyright.setup {
+        on_attach = function(client, bufnr)
+            on_attach(client, bufnr)
+        end
+    }
+
+    require'nvim-treesitter.configs'.setup {
+        highlight = { enable = true },
+        incremental_selection = { enable = true },
+        indent = { enable = true },
+    }
 EOF
 endif
 

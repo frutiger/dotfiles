@@ -9,3 +9,5 @@ export GIT_PS1_SHOWSTASHSTATE=1
 export GIT_PS1_SHOWCOLORHINTS=1
 PROMPT_COMMAND="$PROMPT_COMMAND;"'__git_ps1 "\u@\h \[[31m\]\w\[[0m\] [\j]" " \[[36m\]$\[[0m\] "'
 
+alias vim=nvim
+

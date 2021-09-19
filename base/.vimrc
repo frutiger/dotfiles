@@ -90,6 +90,12 @@ lua << EOF
         end
     }
 
+    lsp.tsserver.setup {
+        on_attach = function(client, bufnr)
+            on_attach(client, bufnr)
+        end
+    }
+
     require'nvim-treesitter.configs'.setup {
         highlight = { enable = true },
         incremental_selection = { enable = true },

@@ -8,6 +8,7 @@ if has('nvim')
     Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
     Plug 'nvim-lua/plenary.nvim'
     Plug 'nvim-telescope/telescope.nvim'
+    Plug 'ray-x/lsp_signature.nvim'
 
     nnoremap <leader>ff <cmd>lua require('telescope.builtin').find_files()<cr>
     nnoremap <leader>fg <cmd>lua require('telescope.builtin').live_grep()<cr>
@@ -76,6 +77,8 @@ lua << EOF
         buf_set_keymap(']d', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>')
         buf_set_keymap('<space>q', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>')
         buf_set_keymap('<space>f', '<cmd>lua vim.lsp.buf.formatting()<CR>')
+
+        require('lsp_signature').on_attach()
     end
 
     local lsp = require('lspconfig')

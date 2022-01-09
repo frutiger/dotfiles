@@ -30,9 +30,10 @@ set foldmethod=indent foldlevelstart=99
 set incsearch hlsearch
 set list listchars=tab:>-,trail:·
 set nowrap
-set textwidth=79 cc=+1
+set signcolumn=yes:1 textwidth=79 cc=+1
 set matchpairs+=<:>
-set diffopt+=iwhite completeopt-=preview
+set diffopt+=iwhite
+set completeopt=menu,menuone,noselect
 
 set number ruler showmode laststatus=2
 set wildmenu wildmode=longest:full,full wildignore=a.out,*.o,*.a

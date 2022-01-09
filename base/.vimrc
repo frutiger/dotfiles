@@ -96,6 +96,7 @@ lua << EOF
 
     lsp.pyright.setup({ on_attach = on_attach })
     lsp.tsserver.setup({ on_attach = on_attach })
+    lsp.rust_analyzer.setup({ on_attach = on_attach })
 
     require('nvim-treesitter.configs').setup({
         highlight = { enable = true },

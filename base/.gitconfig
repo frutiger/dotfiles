@@ -3,7 +3,7 @@
 [core]
         excludesfile = ~/.gitignore
 [push]
-        default = upstream
+        default = simple
 [pull]
         rebase = true
 [merge]

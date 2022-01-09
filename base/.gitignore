@@ -9,3 +9,6 @@
 .coverage
 htmlcov
 
+# c/c++ generated files
+compile_commands.json
+

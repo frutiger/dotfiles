@@ -55,7 +55,7 @@ let g:ctrlp_match_func = { 'match': 'pymatcher#PyMatch' }
 
 if has('nvim')
 lua << EOF
-    local on_attach = function(client, bufnr)
+    local on_attach = function (client, bufnr)
         local function buf_set_keymap(lhs, rhs)
             vim.api.nvim_buf_set_keymap(bufnr, 'n', lhs, rhs, { noremap=true, silent=true })
         end
@@ -80,34 +80,25 @@ lua << EOF
 
     local lsp = require('lspconfig')
 
-    lsp.clangd.setup {
+    lsp.clangd.setup({
         cmd = { 'clangd', '--background-index', '--completion-style=detailed' },
-        on_attach = function(client, bufnr)
+        on_attach = function (client, bufnr)
             on_attach(client, bufnr)
             vim.api.nvim_buf_set_keymap(bufnr, 'n', '<C-s>', '<cmd>ClangdSwitchSourceHeader<CR>', { noremap=true, silent=true })
         end,
         default_config = {
             filetypes = {'c', 'cc', 'cpp', 'h'},
         }
-    }
+    })
 
-    lsp.pyright.setup {
-        on_attach = function(client, bufnr)
-            on_attach(client, bufnr)
-        end
-    }
+    lsp.pyright.setup({ on_attach = on_attach })
+    lsp.tsserver.setup({ on_attach = on_attach })
 
-    lsp.tsserver.setup {
-        on_attach = function(client, bufnr)
-            on_attach(client, bufnr)
-        end
-    }
-
-    require'nvim-treesitter.configs'.setup {
+    require('nvim-treesitter.configs').setup({
         highlight = { enable = true },
         incremental_selection = { enable = true },
         indent = { enable = true },
-    }
+    })
 EOF
 endif
 

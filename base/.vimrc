@@ -8,6 +8,7 @@ if has('nvim')
     Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
     Plug 'nvim-lua/plenary.nvim'
     Plug 'nvim-telescope/telescope.nvim'
+    Plug 'ray-x/lsp_signature.nvim'
 
     nnoremap <leader>ff <cmd>lua require('telescope.builtin').find_files()<cr>
     nnoremap <leader>fg <cmd>lua require('telescope.builtin').live_grep()<cr>
@@ -29,9 +30,10 @@ set foldmethod=indent foldlevelstart=99
 set incsearch hlsearch
 set list listchars=tab:>-,trail:·
 set nowrap
-set textwidth=79 cc=+1
+set signcolumn=yes:1 textwidth=79 cc=+1
 set matchpairs+=<:>
-set diffopt+=iwhite completeopt-=preview
+set diffopt+=iwhite
+set completeopt=menu,menuone,noselect
 
 set number ruler showmode laststatus=2
 set wildmenu wildmode=longest:full,full wildignore=a.out,*.o,*.a
@@ -55,7 +57,7 @@ let g:ctrlp_match_func = { 'match': 'pymatcher#PyMatch' }
 
 if has('nvim')
 lua << EOF
-    local on_attach = function(client, bufnr)
+    local on_attach = function (client, bufnr)
         local function buf_set_keymap(lhs, rhs)
             vim.api.nvim_buf_set_keymap(bufnr, 'n', lhs, rhs, { noremap=true, silent=true })
         end
@@ -76,38 +78,31 @@ lua << EOF
         buf_set_keymap(']d', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>')
         buf_set_keymap('<space>q', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>')
         buf_set_keymap('<space>f', '<cmd>lua vim.lsp.buf.formatting()<CR>')
+
+        require('lsp_signature').on_attach()
     end
 
     local lsp = require('lspconfig')
 
-    lsp.clangd.setup {
+    lsp.clangd.setup({
         cmd = { 'clangd', '--background-index', '--completion-style=detailed' },
-        on_attach = function(client, bufnr)
+        on_attach = function (client, bufnr)
             on_attach(client, bufnr)
             vim.api.nvim_buf_set_keymap(bufnr, 'n', '<C-s>', '<cmd>ClangdSwitchSourceHeader<CR>', { noremap=true, silent=true })
         end,
         default_config = {
             filetypes = {'c', 'cc', 'cpp', 'h'},
         }
-    }
+    })
 
-    lsp.pyright.setup {
-        on_attach = function(client, bufnr)
-            on_attach(client, bufnr)
-        end
-    }
+    lsp.pyright.setup({ on_attach = on_attach })
+    lsp.tsserver.setup({ on_attach = on_attach })
+    lsp.rust_analyzer.setup({ on_attach = on_attach })
 
-    lsp.tsserver.setup {
-        on_attach = function(client, bufnr)
-            on_attach(client, bufnr)
-        end
-    }
-
-    require'nvim-treesitter.configs'.setup {
+    require('nvim-treesitter.configs').setup({
         highlight = { enable = true },
         incremental_selection = { enable = true },
-        indent = { enable = true },
-    }
+    })
 EOF
 endif
 

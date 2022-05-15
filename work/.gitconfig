@@ -1,6 +1,9 @@
 [user]
         email = mrahman15@bloomberg.net
 
+[http "https://github.com"]
+        sslCAInfo = ~/certs/Bloomberg LP CORP CLASS 1 ROOT G2.cer
+
 [url "https://bbgithub.dev.bloomberg.com/"]
         insteadOf = bbgithub:
         insteadOf = bbgithub.dev.bloomberg.com:

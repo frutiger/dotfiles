@@ -1,4 +1,4 @@
-export EDITOR=vim
+export EDITOR=nvim
 export PAGER=less
 export TZ="America/New_York"
 export PATH=~/.local/bin:~/.cargo/bin:~/bin:$PATH

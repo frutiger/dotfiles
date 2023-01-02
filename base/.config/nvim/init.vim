@@ -16,34 +16,6 @@ nnoremap <leader>fg <cmd>lua require('telescope.builtin').live_grep()<cr>
 nnoremap <leader>fb <cmd>lua require('telescope.builtin').buffers()<cr>
 nnoremap <leader>fh <cmd>lua require('telescope.builtin').help_tags()<cr>
 
-set directory=~/.swp//
-
-set hidden
-set tabstop=8 softtabstop=8
-set shiftwidth=4 expandtab smarttab
-set backspace=indent,eol,start
-set autoindent smartindent cino+=(0,t0,l1,g0
-set fileformats=unix,dos encoding=utf-8
-
-set foldmethod=indent foldlevelstart=99
-set incsearch hlsearch
-set list listchars=tab:>-,trail:·
-set nowrap
-set signcolumn=yes:1 textwidth=79 cc=+1
-set matchpairs+=<:>
-set diffopt+=iwhite
-set completeopt=menu,menuone,noselect
-
-set number ruler showmode laststatus=2
-set wildmenu wildmode=longest:full,full wildignore=a.out,*.o,*.a
-set complete=.,w,b,u
-set scrolloff=5
-set mouse=a
-set tabpagemax=64
-set belloff=all
-
-set termguicolors
-
 noremap <leader>i <Esc>yyPwdwiifndef INCLUDED<Esc>lr_vw~wDjo#endif<Esc>o<Esc>
 noremap <leader>r 100A <Esc>d70\|a// RETURN<Esc>
 
@@ -54,6 +26,47 @@ let g:ctrlp_clear_cache_on_exit = 0
 let g:ctrlp_match_func = { 'match': 'pymatcher#PyMatch' }
 
 lua << EOF
+-- Options
+vim.o.directory="~/.swp//"
+vim.o.hidden=true
+vim.o.tabstop=8
+vim.o.softtabstop=8
+vim.o.shiftwidth=4
+vim.o.expandtab=true
+vim.o.smarttab=true
+vim.o.backspace="indent,eol,start"
+vim.o.autoindent=true
+vim.o.smartindent=true
+vim.o.cino="(0,t0,l1,g0"
+vim.o.fileformats="unix,dos"
+vim.o.encoding="utf-8"
+vim.o.foldmethod="indent"
+vim.o.foldlevelstart=99
+vim.o.incsearch=true
+vim.o.hlsearch=true
+vim.o.list=true
+vim.o.listchars="tab:>-,trail:·"
+vim.o.wrap=false
+vim.o.signcolumn="yes:1"
+vim.o.textwidth=79
+vim.o.cc="+1"
+vim.opt.matchpairs:append("<:>")
+vim.opt.diffopt:append("iwhite")
+vim.o.completeopt="menu,menuone,noselect"
+vim.o.number=true
+vim.o.ruler=true
+vim.o.showmode=true
+vim.o.laststatus=2
+vim.o.wildmenu=true
+vim.o.wildmode="longest:full,full"
+vim.o.wildignore="a.out,*.o,*.a"
+vim.o.complete=".,w,b,u"
+vim.o.scrolloff=5
+vim.o.mouse="a"
+vim.o.tabpagemax=64
+vim.o.belloff="all"
+vim.o.termguicolors=true
+
 -- Auto Commands
 vim.api.nvim_create_autocmd({"FileType"}, {
     pattern = { "*.c", "*.cc", "*.cpp", "*.h" },

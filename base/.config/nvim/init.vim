@@ -1,17 +1,19 @@
-call plug#begin()
-Plug 'FelikZ/ctrlp-py-matcher'
-Plug 'folke/lsp-colors.nvim'
-Plug 'gpanders/nvim-parinfer'
-Plug 'kien/ctrlp.vim'
-Plug 'navarasu/onedark.nvim'
-Plug 'neovim/nvim-lspconfig'
-Plug 'nvim-lua/plenary.nvim'
-Plug 'nvim-telescope/telescope.nvim'
-Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
-Plug 'ray-x/lsp_signature.nvim'
-call plug#end()
-
 lua << EOF
+-- Plugins
+require('packer').startup(function (use)
+use 'wbthomason/packer.nvim'
+use 'FelikZ/ctrlp-py-matcher'
+use 'gpanders/nvim-parinfer'
+use 'kien/ctrlp.vim'
+use 'lifepillar/vim-solarized8'
+use 'navarasu/onedark.nvim'
+use 'neovim/nvim-lspconfig'
+use 'nvim-lua/plenary.nvim'
+use 'nvim-telescope/telescope.nvim'
+use { 'nvim-treesitter/nvim-treesitter', run=':TSUpdate' }
+use 'ray-x/lsp_signature.nvim'
+end)
+
 -- Options
 vim.o.directory="~/.swp//"
 vim.o.hidden=true

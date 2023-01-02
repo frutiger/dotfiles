@@ -22,7 +22,7 @@ set hidden
 set tabstop=8 softtabstop=8
 set shiftwidth=4 expandtab smarttab
 set backspace=indent,eol,start
-set autoindent smartindent cindent cino+=(0,t0,l1,g0
+set autoindent smartindent cino+=(0,t0,l1,g0
 set fileformats=unix,dos encoding=utf-8
 
 set foldmethod=indent foldlevelstart=99
@@ -54,6 +54,14 @@ let g:ctrlp_clear_cache_on_exit = 0
 let g:ctrlp_match_func = { 'match': 'pymatcher#PyMatch' }
 
 lua << EOF
+-- Auto Commands
+vim.api.nvim_create_autocmd({"FileType"}, {
+    pattern = { "*.c", "*.cc", "*.cpp", "*.h" },
+    callback = function (ev)
+        vim.opt_local.cindent = true
+    end
+})
+
 -- LSP configuration
 local on_attach = function (client, bufnr)
     local function buf_set_keymap(lhs, rhs)

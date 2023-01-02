@@ -1,4 +1,3 @@
-lua << EOF
 -- Plugins
 require('packer').startup(function (use)
 use 'wbthomason/packer.nvim'
@@ -172,5 +171,4 @@ require('onedark').setup  {
     },
 }
 require('onedark').load()
-EOF
 

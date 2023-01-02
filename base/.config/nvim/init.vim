@@ -16,9 +16,6 @@ nnoremap <leader>fg <cmd>lua require('telescope.builtin').live_grep()<cr>
 nnoremap <leader>fb <cmd>lua require('telescope.builtin').buffers()<cr>
 nnoremap <leader>fh <cmd>lua require('telescope.builtin').help_tags()<cr>
 
-noremap <leader>i <Esc>yyPwdwiifndef INCLUDED<Esc>lr_vw~wDjo#endif<Esc>o<Esc>
-noremap <leader>r 100A <Esc>d70\|a// RETURN<Esc>
-
 let g:ctrlp_cmd = 'CtrlP ~'
 let g:ctrlp_user_command = 'scan %s'
 let g:ctrlp_max_files = 0
@@ -66,6 +63,10 @@ vim.o.mouse="a"
 vim.o.tabpagemax=64
 vim.o.belloff="all"
 vim.o.termguicolors=true
+
+-- Keymaps
+vim.keymap.set('n', '<leader>i', '<Esc>yyPwdwiifndef INCLUDED<Esc>lr_vw~wDjo#endif<Esc>o<Esc>')
+vim.keymap.set('n', '<leader>r', '100A <Esc>d70|a// RETURN<Esc>')
 
 -- Auto Commands
 vim.api.nvim_create_autocmd({"FileType"}, {

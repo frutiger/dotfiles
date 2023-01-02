@@ -11,11 +11,6 @@ Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'ray-x/lsp_signature.nvim'
 call plug#end()
 
-nnoremap <leader>ff <cmd>lua require('telescope.builtin').find_files()<cr>
-nnoremap <leader>fg <cmd>lua require('telescope.builtin').live_grep()<cr>
-nnoremap <leader>fb <cmd>lua require('telescope.builtin').buffers()<cr>
-nnoremap <leader>fh <cmd>lua require('telescope.builtin').help_tags()<cr>
-
 lua << EOF
 -- Options
 vim.o.directory="~/.swp//"
@@ -68,6 +63,13 @@ vim.g.ctrlp_match_func = { match='pymatcher#PyMatch' }
 -- Keymaps
 vim.keymap.set('n', '<leader>i', '<Esc>yyPwdwiifndef INCLUDED<Esc>lr_vw~wDjo#endif<Esc>o<Esc>')
 vim.keymap.set('n', '<leader>r', '100A <Esc>d70|a// RETURN<Esc>')
+
+-- Telescope Keymaps
+local telescope = require('telescope.builtin')
+vim.keymap.set('n', '<leader>ff', telescope.find_files)
+vim.keymap.set('n', '<leader>fg', telescope.live_grep)
+vim.keymap.set('n', '<leader>fb', telescope.buffers)
+vim.keymap.set('n', '<leader>fh', telescope.help_tags)
 
 -- Auto Commands
 vim.api.nvim_create_autocmd({"FileType"}, {

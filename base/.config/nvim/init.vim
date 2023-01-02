@@ -16,12 +16,6 @@ nnoremap <leader>fg <cmd>lua require('telescope.builtin').live_grep()<cr>
 nnoremap <leader>fb <cmd>lua require('telescope.builtin').buffers()<cr>
 nnoremap <leader>fh <cmd>lua require('telescope.builtin').help_tags()<cr>
 
-let g:ctrlp_cmd = 'CtrlP ~'
-let g:ctrlp_user_command = 'scan %s'
-let g:ctrlp_max_files = 0
-let g:ctrlp_clear_cache_on_exit = 0
-let g:ctrlp_match_func = { 'match': 'pymatcher#PyMatch' }
-
 lua << EOF
 -- Options
 vim.o.directory="~/.swp//"
@@ -63,6 +57,13 @@ vim.o.mouse="a"
 vim.o.tabpagemax=64
 vim.o.belloff="all"
 vim.o.termguicolors=true
+
+-- CtrlP Options
+vim.g.ctrlp_cmd = 'CtrlP ~'
+vim.g.ctrlp_user_command = 'scan %s'
+vim.g.ctrlp_max_files = 0
+vim.g.ctrlp_clear_cache_on_exit = 0
+vim.g.ctrlp_match_func = { match='pymatcher#PyMatch' }
 
 -- Keymaps
 vim.keymap.set('n', '<leader>i', '<Esc>yyPwdwiifndef INCLUDED<Esc>lr_vw~wDjo#endif<Esc>o<Esc>')

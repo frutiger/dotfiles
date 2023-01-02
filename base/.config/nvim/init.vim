@@ -54,6 +54,7 @@ let g:ctrlp_clear_cache_on_exit = 0
 let g:ctrlp_match_func = { 'match': 'pymatcher#PyMatch' }
 
 lua << EOF
+-- LSP configuration
 local on_attach = function (client, bufnr)
     local function buf_set_keymap(lhs, rhs)
         vim.keymap.set('n', lhs, rhs, { buffer=bufnr, silent=true })
@@ -97,11 +98,13 @@ lsp.pyright.setup({ on_attach = on_attach })
 lsp.tsserver.setup({ on_attach = on_attach })
 lsp.rust_analyzer.setup({ on_attach = on_attach })
 
+-- TreeSitter configuration
 require('nvim-treesitter.configs').setup({
     highlight = { enable = true },
     incremental_selection = { enable = true },
 })
 
+-- OneDark colorscheme
 require('onedark').setup  {
     -- Main options --
     style = 'cool', -- Default theme style. Choose between 'dark', 'darker', 'cool', 'deep', 'warm', 'warmer' and 'light'

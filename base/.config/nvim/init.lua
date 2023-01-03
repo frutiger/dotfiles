@@ -14,7 +14,7 @@ use 'ray-x/lsp_signature.nvim'
 end)
 
 -- Options
-vim.o.directory="~/.swp//"
+vim.o.directory=vim.fn.expand("~/.swp//")
 vim.o.hidden=true
 vim.o.tabstop=8
 vim.o.softtabstop=8

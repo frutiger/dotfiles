@@ -39,7 +39,7 @@ vim.o.textwidth=79
 vim.o.cc="+1"
 vim.opt.matchpairs:append("<:>")
 vim.opt.diffopt:append("iwhite")
-vim.o.completeopt="menu,menuone,noselect"
+vim.o.completeopt="menu"
 vim.o.number=true
 vim.o.ruler=true
 vim.o.showmode=true

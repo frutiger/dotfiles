@@ -1,2 +1,0 @@
-eval "$(brew shellenv)"
-

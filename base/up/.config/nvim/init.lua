@@ -14,45 +14,45 @@ use 'ray-x/lsp_signature.nvim'
 end)
 
 -- Options
-vim.o.directory=vim.fn.expand("~/.swp//")
-vim.o.hidden=true
-vim.o.tabstop=8
-vim.o.softtabstop=8
-vim.o.shiftwidth=4
-vim.o.expandtab=true
-vim.o.smarttab=true
-vim.o.backspace="indent,eol,start"
-vim.o.autoindent=true
-vim.o.smartindent=true
-vim.o.cino="(0,t0,l1,g0"
-vim.o.fileformats="unix,dos"
-vim.o.encoding="utf-8"
-vim.o.foldmethod="indent"
-vim.o.foldlevelstart=99
-vim.o.incsearch=true
-vim.o.hlsearch=true
-vim.o.list=true
-vim.o.listchars="tab:>-,trail:·"
-vim.o.wrap=false
-vim.o.signcolumn="yes:1"
-vim.o.textwidth=79
-vim.o.cc="+1"
-vim.opt.matchpairs:append("<:>")
-vim.opt.diffopt:append("iwhite")
-vim.o.completeopt="menu"
-vim.o.number=true
-vim.o.ruler=true
-vim.o.showmode=true
-vim.o.laststatus=2
-vim.o.wildmenu=true
-vim.o.wildmode="longest:full,full"
-vim.o.wildignore="a.out,*.o,*.a"
-vim.o.complete=".,w,b,u"
-vim.o.scrolloff=5
-vim.o.mouse="a"
-vim.o.tabpagemax=64
-vim.o.belloff="all"
-vim.o.termguicolors=true
+vim.opt.autoindent               = true
+vim.opt.backspace                = { 'indent', 'eol', 'start' }
+vim.opt.belloff                  = 'all'
+vim.opt.cc                       = '+1'
+vim.opt.cino                     = { '(0', 't0', 'l1', 'g0' }
+vim.opt.complete                 = { '.', 'w', 'b', 'u' }
+vim.opt.completeopt              = { 'menu' }
+vim.opt.diffopt:append('iwhite')
+vim.opt.directory                = vim.fn.expand('~/.swp//')
+vim.opt.encoding                 = 'utf-8'
+vim.opt.expandtab                = true
+vim.opt.fileformats              = { 'unix', 'dos' }
+vim.opt.foldlevelstart           = 99
+vim.opt.foldmethod               = 'indent'
+vim.opt.hidden                   = true
+vim.opt.hlsearch                 = true
+vim.opt.incsearch                = true
+vim.opt.laststatus               = 2
+vim.opt.list                     = true
+vim.opt.listchars                = { tab = ':>-', trail = '·' }
+vim.opt.matchpairs:append('<:>')
+vim.opt.mouse                    = 'a'
+vim.opt.number                   = true
+vim.opt.ruler                    = true
+vim.opt.scrolloff                = 5
+vim.opt.shiftwidth               = 4
+vim.opt.showmode                 = true
+vim.opt.signcolumn               = 'yes:1'
+vim.opt.smartindent              = true
+vim.opt.smarttab                 = true
+vim.opt.softtabstop              = 8
+vim.opt.tabpagemax               = 64
+vim.opt.tabstop                  = 8
+vim.opt.termguicolors            = true
+vim.opt.textwidth                = 79
+vim.opt.wildignore               = { 'a.out', '*.o', '*.a' }
+vim.opt.wildmenu                 = true
+vim.opt.wildmode                 = { 'longest:full', 'full' }
+vim.opt.wrap                     = false
 
 -- CtrlP Options
 vim.g.ctrlp_cmd = 'CtrlP ~'

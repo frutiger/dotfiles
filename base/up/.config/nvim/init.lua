@@ -62,7 +62,6 @@ vim.g.ctrlp_clear_cache_on_exit = 0
 vim.g.ctrlp_match_func = { match = 'pymatcher#PyMatch' }
 
 -- Keymaps
-vim.keymap.set('n', '<leader>i', '<Esc>yyPwdwiifndef INCLUDED<Esc>lr_vw~wDjo#endif<Esc>o<Esc>')
 vim.keymap.set('n', '<leader>r', '100A <Esc>d70|a// RETURN<Esc>')
 
 -- Telescope Keymaps

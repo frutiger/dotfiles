@@ -9,7 +9,7 @@ use 'navarasu/onedark.nvim'
 use 'neovim/nvim-lspconfig'
 use 'nvim-lua/plenary.nvim'
 use 'nvim-telescope/telescope.nvim'
-use { 'nvim-treesitter/nvim-treesitter', run=':TSUpdate' }
+use { 'nvim-treesitter/nvim-treesitter', run = ':TSUpdate' }
 use 'ray-x/lsp_signature.nvim'
 end)
 
@@ -59,7 +59,7 @@ vim.g.ctrlp_cmd = 'CtrlP ~'
 vim.g.ctrlp_user_command = 'scan %s'
 vim.g.ctrlp_max_files = 0
 vim.g.ctrlp_clear_cache_on_exit = 0
-vim.g.ctrlp_match_func = { match='pymatcher#PyMatch' }
+vim.g.ctrlp_match_func = { match = 'pymatcher#PyMatch' }
 
 -- Keymaps
 vim.keymap.set('n', '<leader>i', '<Esc>yyPwdwiifndef INCLUDED<Esc>lr_vw~wDjo#endif<Esc>o<Esc>')
@@ -73,8 +73,8 @@ vim.keymap.set('n', '<leader>fb', telescope.buffers)
 vim.keymap.set('n', '<leader>fh', telescope.help_tags)
 
 -- Auto Commands
-vim.api.nvim_create_autocmd({"FileType"}, {
-    pattern = { "*.c", "*.cc", "*.cpp", "*.h" },
+vim.api.nvim_create_autocmd({'FileType'}, {
+    pattern = { '*.c', '*.cc', '*.cpp', '*.h' },
     callback = function (ev)
         vim.opt_local.cindent = true
     end
@@ -83,7 +83,7 @@ vim.api.nvim_create_autocmd({"FileType"}, {
 -- LSP configuration
 local on_attach = function (client, bufnr)
     local function buf_set_keymap(lhs, rhs)
-        vim.keymap.set('n', lhs, rhs, { buffer=bufnr, silent=true })
+        vim.keymap.set('n', lhs, rhs, { buffer = bufnr, silent = true })
     end
 
     vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
@@ -113,7 +113,13 @@ lsp.clangd.setup({
     cmd = { 'clangd', '--background-index', '--completion-style=detailed' },
     on_attach = function (client, bufnr)
         on_attach(client, bufnr)
-        vim.api.nvim_buf_set_keymap(bufnr, 'n', '<C-s>', '<cmd>ClangdSwitchSourceHeader<CR>', { noremap=true, silent=true })
+        vim.api.nvim_buf_set_keymap(
+            bufnr,
+            'n',
+            '<C-s>',
+            '<cmd>ClangdSwitchSourceHeader<CR>',
+            { noremap = true, silent = true }
+        )
     end,
     default_config = {
         filetypes = {'c', 'cc', 'cpp', 'h'},

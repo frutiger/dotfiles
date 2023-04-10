@@ -1,10 +1,7 @@
 -- Plugins
 require('packer').startup(function (use)
 use 'wbthomason/packer.nvim'
-use 'FelikZ/ctrlp-py-matcher'
 use 'gpanders/nvim-parinfer'
-use 'kien/ctrlp.vim'
-use 'lifepillar/vim-solarized8'
 use 'navarasu/onedark.nvim'
 use 'neovim/nvim-lspconfig'
 use 'nvim-lua/plenary.nvim'

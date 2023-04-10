@@ -137,7 +137,7 @@ require('nvim-treesitter.configs').setup({
 
 -- OneDark colorscheme
 require('onedark').setup({
-    style = 'cool',
+    style = 'deep',
     ending_tildes = true,
     code_style = {
         comments = 'italic',

@@ -6,10 +6,9 @@ vim.api.nvim_create_autocmd({"VimEnter"}, {
         bg = normal_colors['background']
         fg = normal_colors['foreground']
 
-        command = "silent !iterm2_set_bg_fg.py "
-            .. "--bg " .. bg .. " "
-            .. "--fg " .. fg .. " "
-            .. "&"
+        command = "silent !iterm2_set_bg_fg.py"
+            .. " --bg " .. bg
+            .. " --fg " .. fg
         vim.api.nvim_command(command)
     end
 })
@@ -17,7 +16,7 @@ vim.api.nvim_create_autocmd({"VimEnter"}, {
 vim.api.nvim_create_autocmd({"VimLeave"}, {
     pattern = {"*"},
     callback = function (ev)
-        command = "silent !iterm2_set_bg_fg.py reset &"
+        command = "silent !iterm2_set_bg_fg.py reset"
         vim.api.nvim_command(command)
     end
 })

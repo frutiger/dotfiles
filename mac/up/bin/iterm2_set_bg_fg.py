@@ -1,6 +1,7 @@
 #!/Users/masud/Library/ApplicationSupport/iTerm2/iterm2env/versions/3.8.6/bin/python3
 
 import argparse
+import asyncio
 import sys
 
 import iterm2
@@ -33,8 +34,8 @@ def parse_args():
         return result
 
     parser = argparse.ArgumentParser()
-    parser.add_argument("--bg",   required=True)
-    parser.add_argument("--fg",   required=True)
+    parser.add_argument("--bg", required=True)
+    parser.add_argument("--fg", required=True)
     result = parser.parse_args()
     result.mode = 'set'
     return result
@@ -58,21 +59,40 @@ async def set_colors(connection):
 
     profile = await session.async_get_profile()
 
+    async def set_color(storage, kind, new_color):
+        current_color = getattr(profile, f"{kind}ground_color")
+
+        setter = getattr(profile, f"async_set_{kind}ground_color")
+        storer = lambda c: session.async_set_variable(storage, c)
+
+        await asyncio.gather(
+            storer(format_color(current_color)),
+            setter(parse_color(new_color)),
+        )
+
+    async def reset_color(storage, kind):
+        stored_color = await session.async_get_variable(storage)
+        if None == stored_color:
+            return
+
+        setter = getattr(profile, f"async_set_{kind}ground_color")
+        storer = lambda c: session.async_set_variable(storage, c)
+
+        await asyncio.gather(
+            storer(None),
+            setter(parse_color(stored_color)),
+        )
+
     if args.mode == 'set':
-        curr_bg = format_color(profile.background_color)
-        curr_fg = format_color(profile.foreground_color)
-
-        await session.async_set_variable("user.bg", curr_bg)
-        await session.async_set_variable("user.fg", curr_fg)
-
-        new_bg   = parse_color(args.bg)
-        new_fg   = parse_color(args.fg)
+        await asyncio.gather(
+            set_color("user.bg", "back", args.bg),
+            set_color("user.fg", "fore", args.fg),
+        )
     else:
-        new_bg   = parse_color(await session.async_get_variable("user.bg"))
-        new_fg   = parse_color(await session.async_get_variable("user.fg"))
-
-    await profile.async_set_background_color(new_bg)
-    await profile.async_set_foreground_color(new_fg)
+        await asyncio.gather(
+            reset_color("user.bg", "back"),
+            reset_color("user.fg", "fore"),
+        )
 
 def main():
     iterm2.run_until_complete(set_colors)

@@ -18,6 +18,7 @@ vim.api.nvim_create_autocmd({"VimLeave"}, {
     callback = function (ev)
         command = "silent !iterm2_set_bg_fg.py reset"
         vim.api.nvim_command(command)
+        vim.cmd('sleep 10m')
     end
 })
 

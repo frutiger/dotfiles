@@ -51,13 +51,6 @@ vim.opt.wildmenu                 = true
 vim.opt.wildmode                 = { 'longest:full', 'full' }
 vim.opt.wrap                     = false
 
--- CtrlP Options
-vim.g.ctrlp_cmd                 = 'CtrlP ~'
-vim.g.ctrlp_user_command        = 'scan %s'
-vim.g.ctrlp_max_files           = 0
-vim.g.ctrlp_clear_cache_on_exit = 0
-vim.g.ctrlp_match_func          = { match = 'pymatcher#PyMatch' }
-
 -- Keymaps
 vim.keymap.set('n', '<leader>r', '100A <Esc>d70|a// RETURN<Esc>')
 

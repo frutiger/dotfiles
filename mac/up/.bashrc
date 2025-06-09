@@ -1,5 +1,7 @@
-if [ -f $(brew --prefix)/etc/bash_completion ]; then
-    source $(brew --prefix)/etc/bash_completion
+if [ -d $(brew --prefix)/etc/bash_completion.d ]; then
+    for f in $(brew --prefix)/etc/bash_completion.d/*; do
+        source $f
+    done
 fi
 
 export GIT_PS1_SHOWDIRTYSTATE=1

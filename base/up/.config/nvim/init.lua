@@ -53,6 +53,7 @@ vim.opt.wrap                     = false
 
 -- Keymaps
 vim.keymap.set('n', '<leader>r', '100A <Esc>d70|a// RETURN<Esc>')
+vim.keymap.set('n', ' e', vim.diagnostic.open_float)
 
 -- Telescope Keymaps
 local telescope = require('telescope.builtin')
@@ -69,57 +70,24 @@ vim.api.nvim_create_autocmd({'FileType'}, {
     end
 })
 
--- LSP configuration
-local on_attach = function (client, bufnr)
-    local function buf_set_keymap(lhs, rhs)
-        vim.keymap.set('n', lhs, rhs, { buffer = bufnr, silent = true })
+vim.api.nvim_create_autocmd({'LspAttach'}, {
+    pattern = { '*' },
+    callback = function (ev)
+        require('lsp_signature').on_attach()
     end
-
-    vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
-
-    buf_set_keymap('<C-k>', vim.lsp.buf.signature_help)
-    buf_set_keymap(' ca', vim.lsp.buf.code_action)
-    buf_set_keymap(' e', vim.diagnostic.open_float)
-    buf_set_keymap(' f', function ()
-        vim.lsp.buf.format()
-    end)
-    buf_set_keymap(' q', vim.diagnostic.setloclist)
-    buf_set_keymap(' rn', vim.lsp.buf.rename)
-    buf_set_keymap(' wl', function ()
-        vim.pretty_print(vim.lsp.buf.list_workspace_folders())
-    end)
-    buf_set_keymap('K', vim.lsp.buf.hover)
-    buf_set_keymap('gD', vim.lsp.buf.declaration)
-    buf_set_keymap('gd', vim.lsp.buf.definition)
-    buf_set_keymap('gi', vim.lsp.buf.implementation)
-    buf_set_keymap('gI', vim.lsp.buf.incoming_calls)
-    buf_set_keymap('gr', vim.lsp.buf.references)
-
-    require('lsp_signature').on_attach()
-end
-
-local lsp = require('lspconfig')
-
-lsp.clangd.setup({
-    cmd = { 'clangd', '--background-index', '--completion-style=detailed' },
-    on_attach = function (client, bufnr)
-        on_attach(client, bufnr)
-        vim.api.nvim_buf_set_keymap(
-            bufnr,
-            'n',
-            '<C-s>',
-            '<cmd>ClangdSwitchSourceHeader<CR>',
-            { noremap = true, silent = true }
-        )
-    end,
-    default_config = {
-        filetypes = {'c', 'cc', 'cpp', 'h'},
-    }
 })
 
-lsp.pyright.setup({ on_attach = on_attach })
-lsp.tsserver.setup({ on_attach = on_attach })
-lsp.rust_analyzer.setup({ on_attach = on_attach })
+vim.api.nvim_create_autocmd({'LspAttach'}, {
+    pattern = { '*.c', '*.cc', '*.cpp', '*.h' },
+    callback = function (ev)
+        vim.keymap.set('n', '<C-s>', '<cmd>LspClangdSwitchSourceHeader<CR>')
+    end
+})
+
+-- LSP enablements
+vim.lsp.enable('clangd')
+vim.lsp.enable('pyright')
+vim.lsp.enable('ts_ls')
 
 -- TreeSitter configuration
 require('nvim-treesitter.configs').setup({

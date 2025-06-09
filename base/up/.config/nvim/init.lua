@@ -2,6 +2,7 @@
 require('packer').startup(function (use)
 use 'wbthomason/packer.nvim'
 use 'gpanders/nvim-parinfer'
+use 'lark-parser/vim-lark-syntax'
 use 'navarasu/onedark.nvim'
 use 'neovim/nvim-lspconfig'
 use 'nvim-lua/plenary.nvim'

@@ -1,0 +1,77 @@
+#!/usr/bin/env python3
+
+import json
+import subprocess
+import sys
+
+import requests
+
+def vrsappsvc(request):
+    url = "http://basvdp.bdns.bloomberg.com:10799/273642/1/3"
+    return requests.post(url, json=request).json()
+
+def print_log(versions, bundle, including, excluding):
+    print(f"{including} -> {excluding}")
+    cmd = [
+        "git", "log", "--oneline", "--no-merges",
+        versions[including], "^" + versions[excluding],
+        "--", f"{bundle}/**.js", f"{bundle}/**.ts"
+    ]
+    #print(' '.join(cmd))
+    x = subprocess.check_call(cmd, stdout=sys.stdout)
+
+def log_change(bundle):
+    contentDetails = vrsappsvc({
+        "getContentDetails": {
+            "identifier": {
+                "details": {
+                    "name": bundle,
+                    "type": "BUNDLE",
+                },
+            },
+        },
+    })["getContentDetails"]["value"]
+    releaseGroup = contentDetails["releaseGroup"]
+    releaseGroupDetails = vrsappsvc({
+        "getReleaseGroupAndBranchDetails": {
+            "name": releaseGroup["name"],
+        },
+    })["getReleaseGroupAndBranchDetails"]["value"]
+
+    versions = {}
+    for branch in releaseGroupDetails["branches"]:
+        if branch["branch"]["name"] in { "R0", "R1", "R2" }:
+            for version in branch["versions"]:
+                if version["contentName"] == bundle:
+                    versions[branch["branch"]["name"]] = version["version"]
+
+    for branch in versions:
+        contentMetadata = vrsappsvc({
+            "getContentVersionAndMetadata": {
+                "identifier": {
+                    "details": {
+                        "contentName": bundle,
+                        "contentType": "BUNDLE",
+                        "version": versions[branch],
+                    },
+                },
+            },
+        })["getContentVersionAndMetadata"]["value"]
+        structuredData = contentMetadata["metadata"]["structuredData"]
+        versions[branch] = structuredData["bundle"]["commitId"]
+
+    print(bundle)
+    print('=' * len(bundle))
+    print()
+    print_log(versions, bundle, "R2", "R1")
+    print()
+    print_log(versions, bundle, "R1", "R0")
+    print()
+
+def main():
+    for bundle in sys.argv[1:]:
+        log_change(bundle)
+
+if __name__ == "__main__":
+    main()
+

@@ -1,0 +1,3 @@
+#!/bin/bash
+
+curl -Ss sor.bloomberg.com/sor/servers/group/"$1" | jq -r '.servers[].server.fqdn'

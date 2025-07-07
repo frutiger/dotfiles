@@ -1,0 +1,3 @@
+#!/bin/bash
+
+dig +short -x $(dig +short "$1" | head -1)

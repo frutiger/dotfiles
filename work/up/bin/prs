@@ -1,0 +1,40 @@
+#!/usr/bin/env python3
+
+import datetime
+import sys
+
+import requests
+
+class Messenger:
+    def __init__(self, root, user, token):
+        self._root  = root
+        self._user  = user
+        self._token = token
+
+    def get(self, resource):
+        url = f'{self._root}/api/v3/{resource}'
+        auth = requests.auth.HTTPBasicAuth(self._user, self._token)
+        response = requests.get(url, auth=auth)
+        self.links = response.links
+        return response.json()
+
+def main():
+    author    = sys.argv[1]
+    num_years = int(sys.argv[2]) if len(sys.argv) > 2 else 10
+
+    ROOT  = 'https://bbgithub.dev.bloomberg.com'
+    USER  = 'mrahman1'
+    TOKEN = '03ef62714475f0f1beb80802329c4a96570f0a0a'
+
+    msgr = Messenger(ROOT, USER, TOKEN)
+
+    current_year = datetime.datetime.utcnow().year
+    for year in range(current_year, current_year - num_years, -1):
+        query  = f'author:{author} is:pr is:merged created:{year-1}-01-01..{year}-01-01 sort:created-asc'
+        query  = requests.utils.quote(query)
+        issues = msgr.get(f'search/issues?q={query}')
+        print(f'{year-1}:	{issues["total_count"]}')
+
+if __name__ == '__main__':
+    main()
+

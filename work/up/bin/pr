@@ -1,0 +1,58 @@
+#!/usr/bin/env python3
+
+import subprocess
+import sys
+
+import git
+import requests
+
+class Messenger:
+    def __init__(self, root, user, token):
+        self._root  = root
+        self._user  = user
+        self._token = token
+
+    def get(self, resource):
+        url = f'{self._root}/api/v3/{resource}'
+        auth = requests.auth.HTTPBasicAuth(self._user, self._token)
+        response = requests.get(url, auth=auth)
+        self.links = response.links
+        return response.json()
+
+def main():
+    mode = sys.argv[1]
+    pr_number = int(sys.argv[2])
+
+    ROOT = 'https://bbgithub.dev.bloomberg.com'
+    USER = 'mrahman1'
+    TOKEN = '03ef62714475f0f1beb80802329c4a96570f0a0a'
+
+    msgr = Messenger(ROOT, USER, TOKEN)
+
+    repo = git.repo.base.Repo(search_parent_directories=True)
+    for remote in repo.remotes:
+        for url in remote.urls:
+            if url.startswith(ROOT):
+                break
+        else:
+            raise RuntimeError('Could not find a valid remote')
+
+    if url.endswith('.git'):
+        url = url[:-4]
+    owner, repo = url[len(ROOT) + 1:].split('/')
+    repo_info = msgr.get(f'repos/{owner}/{repo}')
+    if 'source' in repo_info:
+        owner = repo_info['source']['owner']['login']
+    pr_info = msgr.get(f'repos/{owner}/{repo}/pulls/{pr_number}')
+
+    author_remote = pr_info['head']['repo']['html_url']
+    author_ref = pr_info['head']['ref']
+
+    if mode == 'fetch':
+        subprocess.run(['git', 'fetch', author_remote, author_ref])
+    elif mode == 'push':
+        subprocess.run(['git', 'push', '-f', author_remote, f'HEAD:refs/heads/{author_ref}'])
+
+if __name__ == '__main__':
+    main()
+

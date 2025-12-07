@@ -1,0 +1,69 @@
+#!/usr/bin/env -S uv run --script
+
+import os
+import subprocess
+import sys
+
+ARCHITECTURES = { 'amd64', 'arm64', 'x86' }
+
+host_arch   = os.environ['PROCESSOR_ARCHITECTURE'].lower()
+target_arch = host_arch
+
+arch_args = []
+vswhere_args = []
+for arg in sys.argv[1:]:
+    if arg in ARCHITECTURES:
+        arch_args.append(arg)
+    else:
+        vswhere_args.append(arg)
+
+if len(arch_args) == 1:
+    target_arch = arch_args[0]
+elif len(arch_args) > 1:
+    host_arch   = arch_args[0]
+    target_arch = arch_args[1]
+
+installation_path = subprocess.check_output([
+    'c:/program files (x86)/microsoft visual studio/installer/vswhere',
+    '-property',
+    'installationPath',
+] + vswhere_args).strip()
+
+lines = subprocess.check_output([
+    'cmd',
+    '/c',
+    installation_path + b'/Common7/Tools/VsDevCmd.bat',
+    '-host_arch=' + host_arch,
+    '-arch=' + target_arch,
+    '&&',
+    'set'
+]).split(b'\r\n')
+
+vsenv_vars = {
+    b'INCLUDE': b'',
+    b'LIB': b'',
+    b'PATH': b'',
+}
+
+for line in lines:
+    if b'=' not in line:
+        continue
+
+    name, value = line.strip().split(b'=')
+    if name.upper() in vsenv_vars:
+        vsenv_vars[name.upper()] = value
+
+def transform_path(path):
+    path = path.replace(b'\\', b'/')
+    if len(path) > 2 and path[1:2] == b':':
+        return b'/' + path[0:1] + path[2:]
+    else:
+        return path
+
+vsenv_vars[b'PATH'] = b':'.join(map(transform_path, vsenv_vars[b'PATH'].split(b';')))
+
+for name, value in vsenv_vars.items():
+    name = name.decode('ascii')
+    value = value.decode('ascii')
+    print(f'export {name}="{value}"')
+

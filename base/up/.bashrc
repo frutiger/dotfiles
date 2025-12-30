@@ -6,12 +6,15 @@ PROMPT_COMMAND='history -a'
 shopt -s histappend
 shopt -s cmdhist
 
-alias gdi='git vimdiff'
 alias gds='git diff --stat'
 alias gitf='git fetch --prune --tags --all'
 
 alias grep='grep --color'
 alias less='less -n'
+
+function gdi {
+    nvim -c 'DiffviewOpen '$@
+}
 
 function go_resolve {
   echo ~/code/*/*$1*

@@ -9,6 +9,7 @@ use 'nvim-lua/plenary.nvim'
 use 'nvim-telescope/telescope.nvim'
 use { 'nvim-treesitter/nvim-treesitter', run = ':TSUpdate' }
 use 'ray-x/lsp_signature.nvim'
+use 'sindrets/diffview.nvim'
 end)
 
 -- Options

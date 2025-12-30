@@ -89,6 +89,7 @@ vim.api.nvim_create_autocmd({'LspAttach'}, {
 -- LSP enablements
 vim.lsp.enable('clangd')
 vim.lsp.enable('pyright')
+vim.lsp.enable('ruff')
 vim.lsp.enable('ts_ls')
 
 -- TreeSitter configuration

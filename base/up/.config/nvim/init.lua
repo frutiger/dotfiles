@@ -95,6 +95,15 @@ vim.lsp.enable('ts_ls')
 
 -- TreeSitter configuration
 require('nvim-treesitter.configs').setup({
+    ensure_installed = {
+        'c',
+        'cpp',
+        'markdown',
+        'markdown_inline',
+        'python',
+        'vim',
+        'vimdoc',
+    },
     highlight = { enable = true },
     incremental_selection = { enable = true },
 })

@@ -1,6 +1,7 @@
 -- Plugins
 require('packer').startup(function (use)
 use 'wbthomason/packer.nvim'
+use 'f-person/auto-dark-mode.nvim'
 use 'gpanders/nvim-parinfer'
 use 'lark-parser/vim-lark-syntax'
 use 'navarasu/onedark.nvim'
@@ -107,4 +108,19 @@ require('onedark').setup({
     },
 })
 require('onedark').load()
+
+require('auto-dark-mode').setup({
+    set_dark_mode = function()
+        vim.opt.background = 'dark'
+        require('onedark').set_options('style', 'deep')
+        require('onedark').load()
+    end,
+    set_light_mode = function()
+        vim.opt.background = 'light'
+        require('onedark').set_options('style', 'light')
+        require('onedark').load()
+    end,
+    update_interval = 1000,
+    fallback = 'light'
+})
 

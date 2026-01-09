@@ -4,14 +4,24 @@
         excludesfile = ~/.gitignore
 [push]
         default = simple
+        followTags = true
 [pull]
         rebase = true
 [merge]
         ff = only
 [rerere]
-        enabled = 1
+        enabled = true
+        autoUpdate = true
 [tag]
         sort = version:refname
 [init]
         defaultBranch = master
+[rebase]
+        autoStash = true
+[help]
+        autocorrect = prompt
+[diff]
+        algorithm = histogram
+        colorMoved = plain
+        renames = true
 
